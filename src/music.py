@@ -1,4 +1,5 @@
 from ursina import Audio
 
-def start():
-    Audio('../assets/sounds/music/background_music.ogg', loop=True)
+class Music:
+    def loop(self, path):
+        Audio(path, loop=True)
