@@ -4,7 +4,7 @@ from logic import reset_game, update_camera_view
 import os
 import simplepbr
 import time
-import music 
+import music
 import world
 import ground
 from sprint import handle_sprint
@@ -25,12 +25,12 @@ parent_dir = os.path.dirname(current_dir)
 SAVE_FILE = os.path.join(parent_dir, 'worldobjects', 'level_map.json')
 
 
-optimizer.load_optimized_level() 
+optimizer.load_optimized_level()
 
 
 app = Ursina(title='AreYouMe') #setup game
 window.fullscreen = True
-window.show_ursina_splash = False     
+window.show_ursina_splash = False
 pipeline = simplepbr.init()
 window.icon = '../assets/textures/icon.ico'
 window.exit_button.enabled = False
@@ -38,8 +38,8 @@ window.cog_button.enabled = False
 
 
 # more setups
-world.setup_world() 
-ground.setup_ground() 
+world.setup_world()
+ground.setup_ground()
 
 
 player = FirstPersonController(position=(0, 2, 0))
@@ -47,14 +47,14 @@ player.cursor.visible = False
 
 # alvin (main character)
 player.character = Entity(
-    model='../assets/alvin/alvin.glb', 
-    parent=player, 
-    scale=1, 
-    y=1, 
+    model='../assets/alvin/alvin.glb',
+    parent=player,
+    scale=1,
+    y=1,
     rotation_y=0,
-    color = black, 
+    color = black,
     enabled=False
-    
+
 )
 
 camera.parent = player.camera_pivot
@@ -65,7 +65,7 @@ mouse.locked = True
 
 def update():
     global cam_dist
-    
+
     #if held_keys['up arrow']:
         #player.position += player.forward * startspeed * time.dt
     #if held_keys['down arrow']:
@@ -74,13 +74,13 @@ def update():
         #player.position += player.left * startspeed * time.dt
     #if held_keys['right arrow']:
         #player.position += player.right * startspeed * time.dt
-    
+
 
     if player.position.y < -30:
         reset_game(player)
-        
+
     handle_sprint(player, startspeed)
-    
+
     # Update camera based on current cam_dist
     cam_dist = update_camera_view(player, camera, cam_dist)
 
@@ -88,15 +88,15 @@ def update():
         player.gravity = flying_gravity
     else:
         player.gravity = startgravity
-    
-    
-    
+
+
+
 def input(key):
     global cam_dist
-    
+
     if key == 'escape':
-        quit()
-        
+        Ursina.app.quit()
+
     if key == 'r':
         reset_game(player, [])
 
@@ -106,5 +106,8 @@ def input(key):
     if key == 'scroll down':
         cam_dist += 1
 
-music.start() # you can add a hashtag if you want the music to stfu. it should look like that: #music.start()
+# You can also load a different music file
+# Or comment out the line above to stop the music
+music.Music().loop('../assets/sounds/music/background_music.ogg')
+
 app.run()
