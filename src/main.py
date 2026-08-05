@@ -1,6 +1,6 @@
 from ursina import *
 from ursina.prefabs.first_person_controller import FirstPersonController
-from logic import reset_game, update_camera_view
+from logic import reset_object, update_camera_view
 import os
 import simplepbr
 import time
@@ -49,12 +49,11 @@ player.cursor.visible = False
 player.character = Entity(
     model='../assets/alvin/alvin.glb',
     parent=player,
-    scale=1,
+    scale=Vec3(1, 1, 1),
     y=1,
     rotation_y=0,
     color = black,
     enabled=False
-
 )
 
 camera.parent = player.camera_pivot
@@ -77,7 +76,7 @@ def update():
 
 
     if player.position.y < -30:
-        reset_game(player)
+        reset_object(player)
 
     handle_sprint(player, startspeed)
 
@@ -98,7 +97,7 @@ def input(key):
         Ursina.app.quit()
 
     if key == 'r':
-        reset_game(player, [])
+        reset_object(player)
 
     # Scroll detection
     if key == 'scroll up':

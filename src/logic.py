@@ -3,17 +3,9 @@ from ursina import clamp, Vec3
 
 current_checkpoint = Vec3(0, 2, 0)
 
-def reset_game(player, enemies=None):
+def reset_object(player):
     player.position = current_checkpoint
     player.rotation = (0, 0, 0)
-    
-    if hasattr(player, 'health'):
-        player.health = 100
-
-    if enemies:
-        for e in enemies:
-            e.position = e.start_position
-            e.health = 100
 
 def update_camera_view(player, camera, camera_distance):
     dist = clamp(camera_distance, 0, 20)
