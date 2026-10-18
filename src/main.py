@@ -1,4 +1,5 @@
 from ursina import *
+from ursina import application
 from ursina.prefabs.first_person_controller import FirstPersonController
 from logic import reset_object, update_camera_view
 import os
@@ -75,7 +76,8 @@ def update():
         #player.position += player.right * startspeed * time.dt
 
 
-    if player.position.y < -30:
+    """ ursina.prefabs.first_person_controller.FirstPersonController.position is a Vec3, the y-coordinate is at index 1. """
+    if player.position[1] < -30:
         reset_object(player)
 
     handle_sprint(player, startspeed)
@@ -95,7 +97,7 @@ def input(key):
 
     match key:
         case 'escape':
-            Ursina.app.quit()
+            application.quit()  # `app.quit()` is an error apparently, `application.quit()` is 'da thing'. who knew?
         case 'r':
             reset_object(player)
         # Scroll detection

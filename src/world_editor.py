@@ -1,5 +1,6 @@
 from ursina import *
 from ursina.prefabs.first_person_controller import FirstPersonController
+from ursina import application
 import json
 import os
 import simplepbr
@@ -38,7 +39,7 @@ class EditorBlock(Entity):
             color=color.green if is_checkpoint else color.white,
             collider='box',
             position=position,
-            scale=1
+            scale=Vec3.one
         )
         self.is_checkpoint = is_checkpoint
         blocks.append(self)
@@ -106,7 +107,7 @@ def input(key):
 
     if key == 's': save_world()
     if key == 'l': load_world()
-    if key == 'escape': quit()
+    if key == 'escape': application.quit()
 
 load_world()
 app.run()

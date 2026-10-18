@@ -31,14 +31,14 @@ def create_checkpoint_trigger(pos):
         color=color.green,
         alpha=0.3, 
         position=pos + Vec3(0, 1, 0), 
-        scale=1,
+        scale=Vec3(1,1,1),# literally default, no idea why I put it here but no way I'm removing it!
         collider='box',
         is_checkpoint=True 
     )
     return trigger
 
 def optimize_bq():
-    level_parent = Entity(model=None, collider=None) 
+    level_parent = Entity(model='', collider=None) 
     checkpoints = []
 
     with open(SAVE_FILE, 'r') as f:
@@ -48,8 +48,8 @@ def optimize_bq():
                 parent=level_parent,
                 model='cube',
                 texture='white_cube',
-                position=(item['x'], item['y'], item['z']),
-                scale=1
+                position=(Vec3(item['x'], item['y'], item['z'])),
+                scale=Vec3(1, 1, 1)
             )
             if item.get('checkpoint', False):
                 create_checkpoint_trigger(Vec3(item['x'], item['y'], item['z']))
