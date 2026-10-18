@@ -1,8 +1,9 @@
+from pathlib import Path
+from panda3d.core import Filename, getModelPath
 from ursina import *
 from ursina import application
 from ursina.prefabs.first_person_controller import FirstPersonController
 from logic import reset_object, update_camera_view
-import os
 import simplepbr
 import time
 import music
@@ -20,16 +21,17 @@ cam_dist = 0
 #me = sigma
 #me.humor.isFunny = False
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(current_dir)
-SAVE_FILE = os.path.join(parent_dir, 'worldobjects', 'level_map.json')
+current_dir = Path(__file__).resolve().parent
+parent_dir = current_dir.parent
+getModelPath().appendDirectory(Filename.fromOsSpecific(str((parent_dir / "assets" / "textures").resolve())))
 
 
-app = Ursina(title='AreYouMe') #setup game
+app = Ursina(title='AreYouMe', icon='icon.ico') #setup game
+application.asset_folder = parent_dir
 window.fullscreen = True
 window.show_ursina_splash = False
 pipeline = simplepbr.init()
-window.icon = '../assets/textures/icon.ico'
+window.icon = 'icon.ico'
 window.exit_button.enabled = False
 window.cog_button.enabled = False
 
@@ -47,7 +49,7 @@ player.cursor.visible = False
 
 ALVIN_SCALE = Vec3(1.35, 1.35, 1.35)
 player.character = Entity(
-    model='../assets/alvin/alvin.glb',
+    model='alvin.glb',
     parent=player,
     scale=ALVIN_SCALE,
     y=1,
@@ -108,6 +110,6 @@ def input(key):
 
 # You can also load a different music file
 # Or comment out the line above to stop the music
-music.Music().loop('../assets/sounds/music/background_music.ogg')
+music.Music().loop(parent_dir / "assets" / "sounds" / "music" / "background_music.ogg")
 
 app.run()
