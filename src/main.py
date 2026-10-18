@@ -25,9 +25,6 @@ parent_dir = os.path.dirname(current_dir)
 SAVE_FILE = os.path.join(parent_dir, 'worldobjects', 'level_map.json')
 
 
-optimizer.load_optimized_level()
-
-
 app = Ursina(title='AreYouMe') #setup game
 window.fullscreen = True
 window.show_ursina_splash = False
@@ -35,6 +32,9 @@ pipeline = simplepbr.init()
 window.icon = '../assets/textures/icon.ico'
 window.exit_button.enabled = False
 window.cog_button.enabled = False
+
+# optimizer level geometry (requires Ursina app context)
+optimizer.load_optimized_level()
 
 
 # more setups
