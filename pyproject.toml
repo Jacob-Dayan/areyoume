@@ -1,0 +1,40 @@
+[project]
+name = "areyoume"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "panda3d-gltf>=0.13",
+    "panda3d-simplepbr>=0.10.0",
+    "pillow>=10.0.0",
+    "ursina>=8.3",
+]
+
+[tool.ruff]
+line-length = 130
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "W",
+    "F",
+    "I",
+    "UP",
+    "B",
+]
+ignore = [
+    "F403",
+    "F405",
+    "E402",
+    "E701"
+]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+
+[tool.pyright]
+reportMissingTypeStubs = false
+reportUnknownMemberType = false
+reportUnknownVariableType = false
+reportUnknownArgumentType = false
+reportWildcardImportFromLibrary = false
+reportUndefinedVariable = false
