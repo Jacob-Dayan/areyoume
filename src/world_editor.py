@@ -68,7 +68,6 @@ def save_world():
     
     with open(SAVE_FILE, 'w') as f:
         json.dump(data, f, indent=4)
-    print(f"World Saved with Checkpoints to: {SAVE_FILE}")
 
 def load_world():
     target = OPTIMIZER_BACKUP if os.path.exists(OPTIMIZER_BACKUP) else SAVE_FILE
@@ -86,13 +85,11 @@ def load_world():
                     )
                 else:
                     EditorBlock(position=(item[0], item[1], item[2]))
-        print("World Loaded.")
 
 def input(key):
     if key == 'left mouse down' and held_keys['c'] and mouse.hovered_entity and isinstance(mouse.hovered_entity, EditorBlock):
             mouse.hovered_entity.is_checkpoint = True
             mouse.hovered_entity.color = color.green
-            print("Block set as Checkpoint!")
             return
 
     if key == 'left mouse down':

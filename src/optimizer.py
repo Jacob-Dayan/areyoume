@@ -2,6 +2,7 @@ import json
 import os
 from ursina import *
 import logic
+import logger
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 SAVE_FILE = os.path.join(parent_dir, 'worldobjects', 'level_map.json')
@@ -37,7 +38,6 @@ def create_checkpoint_trigger(pos):
     return trigger
 
 def optimize_bq():
-    print("Loading Better Quality (BQ) optimization...")
     level_parent = Entity(model=None, collider=None) 
     checkpoints = []
 
@@ -64,7 +64,6 @@ def optimize_bq():
     return level_parent
 
 def optimize_pmode():
-    print("Loading Performance Mode (PMODE) optimization...")
     with open(SAVE_FILE, 'r') as f:
         data = json.load(f)
 
@@ -105,10 +104,10 @@ def load_optimized_level():
     if not os.path.exists(SAVE_FILE):
         return None
 
-    print("--- Level Optimizer ---")
+    logger.debug(sys.argv.__len__())
     while True:
         choice = input("Enter mode (BQ / PMODE): ").strip().upper()
         match choice:
             case 'BQ': return optimize_bq()
             case 'PMODE' | 'PERFORMACE MODE': return optimize_pmode()
-            case _ : print("Invalid input.")
+            case _ : pass
