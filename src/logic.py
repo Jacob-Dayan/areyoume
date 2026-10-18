@@ -1,9 +1,8 @@
-from ursina import clamp, Vec3
-
+from ursina import Vec3, clamp
 
 current_checkpoint = Vec3(0, 2, 0)
 
-def reset_object(player):
+def reset_object(player) -> None:
     player.position = current_checkpoint
     player.rotation = (0, 0, 0)
 

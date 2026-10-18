@@ -1,77 +1,77 @@
 import json
 import os
+
 from ursina import *
-import logic
+
 import logger
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
-SAVE_FILE = os.path.join(parent_dir, 'worldobjects', 'level_map.json')
+SAVE_FILE = os.path.join(parent_dir, "worldobjects", "level_map.json")
 
 directions = {
-    'top':    (0, 1, 0),
-    'bottom': (0,-1, 0),
-    'left':   (-1,0, 0),
-    'right':  (1, 0, 0),
-    'front':  (0, 0, 1),
-    'back':   (0, 0,-1),
+    "top":    (0, 1, 0),
+    "bottom": (0,-1, 0),
+    "left":   (-1,0, 0),
+    "right":  (1, 0, 0),
+    "front":  (0, 0, 1),
+    "back":   (0, 0,-1),
 }
 
 face_vertices = {
-    'top':    [(0,1,0),(1,1,0),(1,1,1),(0,1,1)],
-    'bottom': [(0,0,0),(1,0,0),(1,0,1),(0,0,1)],
-    'left':   [(0,0,0),(0,1,0),(0,1,1),(0,0,1)],
-    'right':  [(1,0,0),(1,1,0),(1,1,1),(1,0,1)],
-    'front':  [(0,0,1),(1,0,1),(1,1,1),(0,1,1)],
-    'back':   [(0,0,0),(1,0,0),(1,1,0),(0,1,0)],
+    "top":    [(0,1,0),(1,1,0),(1,1,1),(0,1,1)],
+    "bottom": [(0,0,0),(1,0,0),(1,0,1),(0,0,1)],
+    "left":   [(0,0,0),(0,1,0),(0,1,1),(0,0,1)],
+    "right":  [(1,0,0),(1,1,0),(1,1,1),(1,0,1)],
+    "front":  [(0,0,1),(1,0,1),(1,1,1),(0,1,1)],
+    "back":   [(0,0,0),(1,0,0),(1,1,0),(0,1,0)],
 }
 
 def create_checkpoint_trigger(pos):
-    trigger = Entity(
-        model='cube',
+    return Entity(
+        model="cube",
         color=color.green,
-        alpha=0.3, 
-        position=pos + Vec3(0, 1, 0), 
+        alpha=0.3,
+        position=pos + Vec3(0, 1, 0),
         scale=Vec3(1,1,1),# literally default, no idea why I put it here but no way I'm removing it!
-        collider='box',
-        is_checkpoint=True 
+        collider="box",
+        is_checkpoint=True,
     )
-    return trigger
 
 def optimize_bq():
-    level_parent = Entity(model='', collider=None) 
-    checkpoints = []
+    level_parent = Entity(model="", collider=None)
 
-    with open(SAVE_FILE, 'r') as f:
+    with open(SAVE_FILE) as f:
         data = json.load(f)
         for item in data:
             Entity(
                 parent=level_parent,
-                model='cube',
-                texture='white_cube',
-                position=(Vec3(item['x'], item['y'], item['z'])),
-                scale=Vec3(1, 1, 1)
+                model="cube",
+                texture="white_cube",
+                position=(Vec3(item["x"], item["y"], item["z"])),
+                scale=Vec3(1, 1, 1),
             )
-            if item.get('checkpoint', False):
-                create_checkpoint_trigger(Vec3(item['x'], item['y'], item['z']))
+            if item.get("checkpoint", False):
+                create_checkpoint_trigger(Vec3(item["x"], item["y"], item["z"]))
 
     level_parent.combine()
-    level_parent.collider = 'mesh' 
-    level_parent.texture = 'white_cube'
-    
+    level_parent.collider = "mesh"
+    level_parent.texture = "white_cube"
+
     for child in level_parent.children:
         destroy(child)
-        
+
     return level_parent
 
 def optimize_pmode():
-    with open(SAVE_FILE, 'r') as f:
+    with open(SAVE_FILE) as f:
         data = json.load(f)
 
-    blocks = set((int(b['x']), int(b['y']), int(b['z'])) for b in data)
-    
+    blocks = {(int(b["x"]), int(b["y"]), int(b["z"])) for b in data}
+
     for item in data:
-        if item.get('checkpoint', False):
-            create_checkpoint_trigger(Vec3(item['x'], item['y'], item['z']))
+        if item.get("checkpoint", False):
+            create_checkpoint_trigger(Vec3(item["x"], item["y"], item["z"]))
 
     vertices = []
     triangles = []
@@ -90,24 +90,25 @@ def optimize_pmode():
 
             triangles += [
                 vertex_index, vertex_index+1, vertex_index+2,
-                vertex_index, vertex_index+2, vertex_index+3
+                vertex_index, vertex_index+2, vertex_index+3,
             ]
 
             uvs += [(0,0),(1,0),(1,1),(0,1)]
             vertex_index += 4
 
-    mesh = Mesh(vertices=vertices, triangles=triangles, uvs=uvs, mode='triangle')
-    entity = Entity(model=mesh, texture='white_cube', collider='mesh')
-    return entity
+    mesh = Mesh(vertices=vertices, triangles=triangles, uvs=uvs, mode="triangle")
+    return Entity(model=mesh, texture="white_cube", collider="mesh")
 
 def load_optimized_level():
     if not os.path.exists(SAVE_FILE):
         return None
 
     logger.debug(sys.argv.__len__())
+
     while True:
         choice = input("Enter mode (BQ / PMODE): ").strip().upper()
         match choice:
-            case 'BQ': return optimize_bq()
-            case 'PMODE' | 'PERFORMACE MODE': return optimize_pmode()
+            case "BQ": return optimize_bq()
+            case "PMODE" | "PERFORMACE MODE": return optimize_pmode()
             case _ : pass
+
