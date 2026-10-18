@@ -14,9 +14,8 @@ import optimizer
 #definitions
 startspeed = 10
 flying_gravity = -2
-startgravity = 3.67676767
+startgravity = 4
 cam_dist = 0
-black = color.black
 #me = sigma
 #me.humor.isFunny = False
 
@@ -45,14 +44,15 @@ ground.setup_ground()
 player = FirstPersonController(position=(0, 2, 0))
 player.cursor.visible = False
 
-# alvin (main character)
+ALVIN_SCALE = Vec3(1.35, 1.35, 1.35)
 player.character = Entity(
     model='../assets/alvin/alvin.glb',
     parent=player,
-    scale=Vec3(1, 1, 1),
+    scale=ALVIN_SCALE,
     y=1,
+    color=color.gray,
+    name='alvin',
     rotation_y=0,
-    color = black,
     enabled=False
 )
 
