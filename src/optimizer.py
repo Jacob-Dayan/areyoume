@@ -108,9 +108,7 @@ def load_optimized_level():
     print("--- Level Optimizer ---")
     while True:
         choice = input("Enter mode (BQ / PMODE): ").strip().upper()
-        if choice == 'BQ':
-            return optimize_bq()
-        elif choice == 'PMODE':
-            return optimize_pmode()
-        else:
-            print("Invalid input.")
+        match choice:
+            case 'BQ': return optimize_bq()
+            case 'PMODE' | 'PERFORMACE MODE': return optimize_pmode()
+            case _ : print("Invalid input.")

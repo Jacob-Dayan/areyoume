@@ -89,8 +89,7 @@ def load_world():
         print("World Loaded.")
 
 def input(key):
-    if key == 'left mouse down' and held_keys['c']:
-        if mouse.hovered_entity and isinstance(mouse.hovered_entity, EditorBlock):
+    if key == 'left mouse down' and held_keys['c'] and mouse.hovered_entity and isinstance(mouse.hovered_entity, EditorBlock):
             mouse.hovered_entity.is_checkpoint = True
             mouse.hovered_entity.color = color.green
             print("Block set as Checkpoint!")
@@ -104,8 +103,7 @@ def input(key):
             target_pos = camera.position + camera.forward * 5
             EditorBlock(position=(round(target_pos.x), round(target_pos.y), round(target_pos.z)))
 
-    if key == 'right mouse down':
-        if mouse.hovered_entity and isinstance(mouse.hovered_entity, EditorBlock):
+    if key == 'right mouse down' and mouse.hovered_entity and isinstance(mouse.hovered_entity, EditorBlock):
             blocks.remove(mouse.hovered_entity)
             destroy(mouse.hovered_entity)
 

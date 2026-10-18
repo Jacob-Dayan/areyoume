@@ -93,17 +93,16 @@ def update():
 def input(key):
     global cam_dist
 
-    if key == 'escape':
-        Ursina.app.quit()
-
-    if key == 'r':
-        reset_object(player)
-
-    # Scroll detection
-    if key == 'scroll up':
-        cam_dist -= 1
-    if key == 'scroll down':
-        cam_dist += 1
+    match key:
+        case 'escape':
+            Ursina.app.quit()
+        case 'r':
+            reset_object(player)
+        # Scroll detection
+        case 'scroll up':
+            cam_dist -= 1
+        case 'scroll down':
+            cam_dist += 1
 
 # You can also load a different music file
 # Or comment out the line above to stop the music
